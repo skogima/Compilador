@@ -1,0 +1,45 @@
+﻿<Window x:Class="Compiler.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Compiler"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="12"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="CompilaDor" Height="550" Width="600">
+    <Border BorderThickness="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2.5*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+
+           <Border BorderThickness="1" BorderBrush="LightGray" Margin="20 0" FocusManager.FocusedElement="{Binding ElementName=CodeBox}">
+                <TextBox Text="{Binding Instruction}" FontSize="14" VerticalContentAlignment="Top" 
+                         AcceptsTab="True" TextWrapping="Wrap" AcceptsReturn="True" Name="CodeBox"
+                         Grid.Row="0" Background="White" BorderThickness="0" VerticalScrollBarVisibility="Auto"
+                         />
+            </Border>
+            
+            <Button Content="Analisar" Command="{Binding Path=AnalisarCommand}" Grid.Row="1" Margin="60 0" />
+
+            <Grid Grid.Row="2" Margin="30 10">
+                <FlowDocumentReader ViewingMode="Scroll" IsFindEnabled="True">
+                    <FlowDocument>
+                        <Paragraph>
+                            <Run Text="{Binding LexicoResult}" />
+                        </Paragraph>
+                    </FlowDocument>
+                </FlowDocumentReader>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
