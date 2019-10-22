@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Compiler"
+        xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="12"
@@ -13,33 +14,44 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="CompilaDor" Height="550" Width="600">
-    <Border BorderThickness="5">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2.5*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="2*" />
-            </Grid.RowDefinitions>
+        WindowStartupLocation="CenterScreen"
+        Title="CompilaDor" Height="600" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
 
-           <Border BorderThickness="1" BorderBrush="LightGray" Margin="20 0" FocusManager.FocusedElement="{Binding ElementName=CodeBox}">
-                <TextBox Text="{Binding Instruction}" FontSize="14" VerticalContentAlignment="Top" 
-                         AcceptsTab="True" TextWrapping="Wrap" AcceptsReturn="True" Name="CodeBox"
-                         Grid.Row="0" Background="White" BorderThickness="0" VerticalScrollBarVisibility="Auto"
-                         />
-            </Border>
-            
-            <Button Content="Analisar" Command="{Binding Path=AnalisarCommand}" Grid.Row="1" Margin="60 0" />
-
-            <Grid Grid.Row="2" Margin="30 10">
-                <FlowDocumentReader ViewingMode="Scroll" IsFindEnabled="True">
-                    <FlowDocument>
-                        <Paragraph>
-                            <Run Text="{Binding LexicoResult}" />
-                        </Paragraph>
-                    </FlowDocument>
-                </FlowDocumentReader>
-            </Grid>
+        <Grid Background="#585858" Grid.Row="0">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center"  Margin="20 0">
+                <Button Background="Transparent" BorderThickness="0" Content="{materialDesign:PackIcon Kind=FolderSearch, Size=24}"/>
+                <Button Background="Transparent" BorderThickness="0" Content="{materialDesign:PackIcon Kind=ContentSave, Size=24}" />
+            </StackPanel>
         </Grid>
-    </Border>
+        
+        <Border Grid.Row="1" BorderThickness="1" BorderBrush="LightGray" FocusManager.FocusedElement="{Binding ElementName=CodeBox}">
+            <avalon:TextEditor Style="{StaticResource ResourceKey=CodeFont}" ShowLineNumbers="True" FontSize="14" BorderThickness="0" 
+                               Name="CodeBox" VerticalScrollBarVisibility="Auto" LineNumbersForeground="#2b91af" SyntaxHighlighting="C++"
+                               Document="{Binding CodeDocument}" />
+        </Border>
+
+        <Button Grid.Row="2" Background="Teal" BorderBrush="Teal" Command="{Binding Path=AnalisarCommand}" Margin="60 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Foreground="White" Content="{materialDesign:PackIcon Kind=PlayArrow}" />
+                <Label Foreground="White" Content="Analisar" />
+            </StackPanel>
+        </Button>
+
+        <Grid Grid.Row="3" Margin="30 10">
+            <FlowDocumentReader ViewingMode="Scroll" IsFindEnabled="True">
+                <FlowDocument>
+                    <Paragraph>
+                        <Run Text="{Binding LexicoResult}" />
+                    </Paragraph>
+                </FlowDocument>
+            </FlowDocumentReader>
+        </Grid>
+    </Grid>
 </Window>

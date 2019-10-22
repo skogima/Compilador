@@ -1,7 +1,7 @@
-﻿using System.Text;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System;
+using ICSharpCode.AvalonEdit.Document;
 
 namespace Compiler
 {
@@ -17,11 +17,7 @@ namespace Compiler
             var lista = AnalisarLinha(linha);
             string retorno = string.Empty;
 
-            lista.ForEach(x => 
-            { retorno += $"{x} ";
-                if (x == "pontoVirgula")
-                    retorno += Environment.NewLine;
-            });
+            lista.ForEach(x => retorno += x + " ");
 
             if (string.IsNullOrEmpty(retorno))
                 return null;
@@ -32,9 +28,9 @@ namespace Compiler
         {
             string palavraAtual = string.Empty;
             List<string> parser = new List<string>();
-            int index;
+            int posLinha = 1;
 
-            for (index = 0; index < linha.Length; index++)
+            for (int index = 0; index < linha.Length; index++)
             {
                 char c = linha[index];
 
@@ -97,6 +93,7 @@ namespace Compiler
                             case '\r':
                                 break;
                             case '\n':
+                                posLinha++;
                                 break;
                             case '\t':
                                 break;
@@ -113,7 +110,7 @@ namespace Compiler
                                 }
                                 else
                                 {
-                                    parser.Add("SIMBOLO_NAO_RECONHECIDO");
+                                    throw new Exception($"Caracter inesperado: linha {posLinha}");
                                 }
                                 break;
                         }
