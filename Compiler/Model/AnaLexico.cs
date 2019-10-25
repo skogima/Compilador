@@ -11,17 +11,12 @@ namespace Compiler
 
         public AnaLexico() { }
 
-        public string Analisar(string linha)
+        public List<string> Analisar(string linha)
         {
             token = 0;
             var lista = AnalisarLinha(linha);
-            string retorno = string.Empty;
 
-            lista.ForEach(x => retorno += x + " ");
-
-            if (string.IsNullOrEmpty(retorno))
-                return null;
-            return retorno;
+            return lista;
         }
 
         private List<string> AnalisarLinha(string linha)
@@ -41,40 +36,43 @@ namespace Compiler
                         {
                             //TODO: Operadores (&&, ||, ...)
                             case ';':
-                                parser.Add("pontoVirgula");
+                                parser.Add(Simbolos.PontoVirgula);
                                 break;
                             case '+':
-                                parser.Add("mais");
+                                parser.Add(Simbolos.Mais);
                                 break;
                             case '-':
-                                parser.Add("menos");
+                                parser.Add(Simbolos.Menos);
                                 break;
                             case '*':
-                                parser.Add("vezes");
+                                parser.Add(Simbolos.Vezes);
                                 break;
                             case '/':
-                                parser.Add("dividir");
+                                parser.Add(Simbolos.Dividir);
                                 break;
                             case ',':
-                                parser.Add("virgula");
+                                parser.Add(Simbolos.Virgula);
                                 break;
                             case '.':
-                                parser.Add("ponto");
+                                parser.Add(Simbolos.Ponto);
                                 break;
                             case '(':
-                                parser.Add("abreParenteses");
+                                parser.Add(Simbolos.AbreParenteses);
                                 break;
                             case ')':
-                                parser.Add("fechaParenteses");
+                                parser.Add(Simbolos.FechaParenteses);
                                 break;
                             case '{':
-                                parser.Add("abreChaves");
+                                parser.Add(Simbolos.AbreChaves);
                                 break;
                             case '}':
-                                parser.Add("fechaChaves");
+                                parser.Add(Simbolos.FechaChaves);
                                 break;
                             case ':':
-                                parser.Add("doisPontos");
+                                parser.Add(Simbolos.DoisPontos);
+                                break;
+                            case '\'':
+                                parser.Add(Simbolos.Apostrofo);
                                 break;
                             case '<':
                                 token = 1;
@@ -110,7 +108,7 @@ namespace Compiler
                                 }
                                 else
                                 {
-                                    throw new Exception($"Caracter inesperado: linha {posLinha}");
+                                    throw new LexicoException($"Caracter inesperado", posLinha, c);
                                 }
                                 break;
                         }
@@ -224,7 +222,8 @@ namespace Compiler
                 return "comute";
             else if (palavra.Equals("case"))
                 return "caso";
-            else if (palavra.Equals("int") || palavra.Equals("float") || palavra.Equals("char"))
+            else if (palavra.Equals("int") || palavra.Equals("float") || 
+                palavra.Equals("char") || palavra.Equals("void"))
                 return $"tipo {palavra}";
             else
                 return $"identificador {palavra}";

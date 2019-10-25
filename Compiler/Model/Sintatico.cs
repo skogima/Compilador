@@ -5,32 +5,68 @@ namespace Compiler
 {
     public class Sintatico
     {
+        private ArvoreSintatica arvore;
         private List<string> parser;
+
         public Sintatico(List<string> _parser)
         {
             parser = _parser;
+            arvore = new ArvoreSintatica();
+            arvore.Valor = "programa";
         }
 
-        public bool Analisar()
+        public void Analisar()
         {
-            int numberOfOpenedParenteses = 0;
-            int numberOfCorrespondentesClosedParenteses = 0;
-            foreach (var item in parser)
-            {
-                if (item.Equals("abreParenteses"))
-                {
-                    numberOfOpenedParenteses++;
-                }
-                else if (item.Equals("fechaParenteses"))
-                    numberOfCorrespondentesClosedParenteses++;
+            var enumerator = parser.GetEnumerator();
+            enumerator.MoveNext();
+            bool result = AnalisarPrograma(enumerator);
+            if (!result) throw new SintaticoException("Função main não declarada");
+        }
+        
+        private bool AnalisarPrograma(IEnumerator<string> enumerator)
+        {
+            string item = enumerator.Current;
 
-                if (numberOfOpenedParenteses != numberOfCorrespondentesClosedParenteses)
+            if (item.Contains("tipo"))
+            {
+                var itens = item.Split(' ');
+
+                if (itens[1].Equals(Simbolos.Int) || item[1].Equals(Simbolos.Void) ||
+                    item[1].Equals(Simbolos.Float) || item[1].Equals(Simbolos.Char))
                 {
-                    return false;
+                    enumerator.MoveNext();
+                    return AnalisarPrograma(enumerator);
+                }
+                else
+                {
+                    throw new SintaticoException($"Tipo não reconhecido: {itens[1]}");
                 }
             }
-
-            return true;
+            else if (item.Equals("identificador main"))
+            {
+                enumerator.MoveNext();
+                if (enumerator.Current.Equals(Simbolos.AbreParenteses))
+                {
+                    enumerator.MoveNext();
+                    if (enumerator.Current.Equals(Simbolos.FechaParenteses))
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            else return false;
+        }
+        private bool AnalisarExpressao(IEnumerator<string> enumerator)
+        {
+            // TODO: Implementar
+            return false;
+        }
+        private bool AnalisarFuncao(IEnumerator<string> enumerator)
+        {
+            // TODO: implementar
+            return false;
         }
     }
 }
