@@ -71,11 +71,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\TipoToken.cs" />
     <Compile Include="Model\AnaLexico.cs" />
-    <Compile Include="Model\ArvoreSintatica.cs" />
     <Compile Include="Model\LexicoException.cs" />
-    <Compile Include="Model\Simbolos.cs" />
     <Compile Include="Model\SintaticoException.cs" />
+    <Compile Include="Model\Token.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="Model\Sintatico.cs" />
     <Page Include="MainWindow.xaml">

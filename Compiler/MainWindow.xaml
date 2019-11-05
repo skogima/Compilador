@@ -15,10 +15,10 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="CompilaDor" Height="600" Width="800">
+        Title="CompilaDor" Height="680" Width="860">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.4*" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -26,7 +26,12 @@
         </Grid.RowDefinitions>
 
         <Grid Background="#585858" Grid.Row="0">
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center"  Margin="20 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+           
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center"  Margin="20 0">
                 <Button Background="Transparent" BorderThickness="0" Command="{Binding ProcurarArquivoCommand}"
                         Content="{materialDesign:PackIcon Kind=FolderSearch, Size=24}"/>
                 <Button Background="Transparent" BorderThickness="0" Command="{Binding SalvarArquivoCommand}"

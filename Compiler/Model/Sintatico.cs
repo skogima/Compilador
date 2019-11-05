@@ -22,7 +22,7 @@ namespace Compiler
             bool result = AnalisarPrograma(enumerator);
             if (!result) throw new SintaticoException("Função main não declarada");
         }
-        
+
         private bool AnalisarPrograma(IEnumerator<string> enumerator)
         {
             string item = enumerator.Current;
