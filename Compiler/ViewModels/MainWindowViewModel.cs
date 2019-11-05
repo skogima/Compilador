@@ -12,7 +12,7 @@ namespace Compiler
         public RelayCommand ProcurarArquivoCommand { get; set; }
         #endregion
 
-        private AnaLexico analexico = new AnaLexico();
+        private AnaLexico analexico;
         public string LexicoResult { get; set; }
         public TextDocument CodeDocument { get; set; }
 
@@ -31,12 +31,14 @@ namespace Compiler
 
             try
             {
-                var result = analexico.Analisar(CodeDocument.Text);
-                LexicoResult = string.Empty;
-                result.ForEach(x => LexicoResult += x + " ");
+                analexico = new AnaLexico(CodeDocument.Text);
+                var result = analexico.Analisar();
 
-                Sintatico sintatico = new Sintatico(result);
-                sintatico.Analisar();
+                LexicoResult = string.Empty;
+                result.ForEach(x => LexicoResult += x.Tipo.ToString() + " ");
+
+                //Sintatico sintatico = new Sintatico(result);
+                //sintatico.Analisar();
             }
             catch (LexicoException ex)
             {

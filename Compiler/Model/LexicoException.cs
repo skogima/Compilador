@@ -9,6 +9,7 @@ namespace Compiler
 
         public LexicoException(string message) : base(message) { }
         public LexicoException(string message, Exception inner) : base(message, inner) { }
+
         public LexicoException(string message, int linha, char caracter) : base(message)
         {
             Linha = linha;

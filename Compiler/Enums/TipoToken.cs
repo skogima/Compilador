@@ -14,6 +14,7 @@
         Float,
         Char,
         Void,
+        Tipo,
         #endregion
         #region Símbolos
         AbreParenteses,
@@ -43,8 +44,13 @@
         Para,
         #endregion
 
+        Continuar,
+        Parar,
+        Comutar,
+        Caso,
         Identificador,
         Atribuicao,
-        Numero
+        Numero,
+        NumeroDecimal
     }
 }
