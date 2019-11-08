@@ -37,8 +37,8 @@ namespace Compiler
                 LexicoResult = string.Empty;
                 result.ForEach(x => LexicoResult += x.Tipo.ToString() + " ");
 
-                //Sintatico sintatico = new Sintatico(result);
-                //sintatico.Analisar();
+                Sintatico sintatico = new Sintatico(result);
+                sintatico.Analisar();
             }
             catch (LexicoException ex)
             {

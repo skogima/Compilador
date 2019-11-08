@@ -7,7 +7,6 @@ namespace Compiler
         private string codigo;
         private int posAtual;
         private char caractereAtual;
-        private Token tokenAtual;
         private List<Token> listaTokens;
 
         public AnaLexico(string document)
@@ -26,6 +25,7 @@ namespace Compiler
             {
                 switch (caractereAtual)
                 {
+                    #region Ignorados
                     case ' ':
                         while (caractereAtual != char.MinValue && caractereAtual.Equals(' '))
                             MoverCaracter();
@@ -41,6 +41,8 @@ namespace Compiler
                         break;
                     case '\t':
                         break;
+                    #endregion
+                    #region Símbolos
                     case '+':
                         listaTokens.Add(AddToken(TipoToken.Mais));
                         break;
@@ -70,9 +72,6 @@ namespace Compiler
                         break;
                     case '.':
                         listaTokens.Add(AddToken(TipoToken.Ponto));
-                        break;
-                    case '\'':
-                        listaTokens.Add(AddToken(TipoToken.Apostrofo));
                         break;
                     case '<':
                         MoverCaracter();
@@ -109,9 +108,28 @@ namespace Compiler
                         if (caractereAtual.Equals('='))
                             listaTokens.Add(new Token { Tipo = TipoToken.Diferente, Valor = "!=" });
                         else
+                        {
                             RecuarCaractere();
+                            throw new LexicoException($"Caractere inesperado '{caractereAtual}' na linha {linha}");
+                        }
                         break;
+                    case '\'':
+                        MoverCaracter();
+                        if (char.IsDigit(caractereAtual))
+                        {
+                            char c = caractereAtual;
+                            MoverCaracter();
+                            if (caractereAtual.Equals('\''))
+                                listaTokens.Add(new Token { Tipo = TipoToken.Literal, Valor = c.ToString()});
+                            else
+                            {
+                                throw new LexicoException($"Caractere inesperado '{caractereAtual}' na linha {linha}");
+                            }
+                        }
+                        break;
+                    #endregion
                     default:
+                        #region Palavras
                         if (char.IsLetter(caractereAtual))
                         {
                             string palavra = string.Empty;
@@ -150,6 +168,7 @@ namespace Compiler
 
                             RecuarCaractere();
                         }
+                        #endregion
                         #region Identificação de Números
                         else if (char.IsDigit(caractereAtual))
                         {
@@ -187,13 +206,9 @@ namespace Compiler
                         }
                         #endregion
                         else
-                        {
                             throw new LexicoException($"Caractere inesperado '{caractereAtual}' na linha {linha}");
-                        }
                         break;
-
                 }
-
                 MoverCaracter();
             }
             return listaTokens;

@@ -9,13 +9,6 @@
         Vezes,
         Dividir,
         #endregion
-        #region Tipos primitivos
-        Int,
-        Float,
-        Char,
-        Void,
-        Tipo,
-        #endregion
         #region Símbolos
         AbreParenteses,
         FechaParenteses,
@@ -24,7 +17,6 @@
         Ponto,
         PontoVirgula,
         Virgula,
-        Apostrofo,
         #endregion
         #region Operadores Lógicos
         Igual,
@@ -44,6 +36,9 @@
         Para,
         #endregion
 
+        Literal,
+        FuncaoMain,
+        Tipo,
         Continuar,
         Parar,
         Comutar,

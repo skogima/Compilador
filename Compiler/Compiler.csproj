@@ -71,6 +71,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ArvoreSintatica\ArvoreNo.cs" />
+    <Compile Include="ArvoreSintatica\AtribuicaoNo.cs" />
+    <Compile Include="ArvoreSintatica\BooleanaNo.cs" />
+    <Compile Include="ArvoreSintatica\ComandosNo.cs" />
+    <Compile Include="ArvoreSintatica\DeclaracaoNo.cs" />
+    <Compile Include="ArvoreSintatica\ExpressaoNo.cs" />
+    <Compile Include="ArvoreSintatica\LoopNo.cs" />
+    <Compile Include="ArvoreSintatica\NumeroNo.cs" />
+    <Compile Include="ArvoreSintatica\VazioNo.cs" />
     <Compile Include="Enums\TipoToken.cs" />
     <Compile Include="Model\AnaLexico.cs" />
     <Compile Include="Model\LexicoException.cs" />
