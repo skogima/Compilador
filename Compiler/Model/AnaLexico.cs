@@ -115,7 +115,7 @@ namespace Compiler
                         break;
                     case '\'':
                         MoverCaracter();
-                        if (char.IsDigit(caractereAtual))
+                        if (char.IsLetterOrDigit(caractereAtual))
                         {
                             char c = caractereAtual;
                             MoverCaracter();

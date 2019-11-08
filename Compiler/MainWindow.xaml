@@ -15,47 +15,67 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="CompilaDor" Height="680" Width="860">
-    <Grid>
+        Title="CompilaDor" MinWidth="860" MinHeight="480" Height="680" Width="860">
+    <Grid Background="#F8F9FA">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.4*" />
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
 
-        <Grid Background="#585858" Grid.Row="0">
+        <Grid Background="#783084" Grid.Row="0">
+            <TextBlock Text="CompilaDor" FontSize="25" Foreground="White" 
+                       FontWeight="Thin" VerticalAlignment="Center" Margin="20 0"  />
+        </Grid>
+
+
+        <Grid Grid.Row="1" x:Name="UpperBarGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-           
+
             <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center"  Margin="20 0">
-                <Button Background="Transparent" BorderThickness="0" Command="{Binding ProcurarArquivoCommand}"
-                        Content="{materialDesign:PackIcon Kind=FolderSearch, Size=24}"/>
-                <Button Background="Transparent" BorderThickness="0" Command="{Binding SalvarArquivoCommand}"
-                        Content="{materialDesign:PackIcon Kind=ContentSave, Size=24}"
-                        />
+                <Button Background="{Binding ElementName=UpperBarGrid, Path=Background}" Command="{Binding AnalisarCommand}"
+                         BorderThickness="0" Foreground="#555">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Foreground="#15C98D" Kind="PlayArrow" Height="25" Width="25"  />
+                        <TextBlock Text="Analisar" VerticalAlignment="Center" Margin="5 0" />
+                    </StackPanel>
+                </Button>
+
+                <Button Background="Transparent" BorderThickness="0" Command="{Binding ProcurarArquivoCommand}" Foreground="#555">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileFind" Height="25" Width="25"  />
+                        <TextBlock Text="Procurar..." VerticalAlignment="Center" Margin="5 0" />
+                    </StackPanel>
+                </Button>
+
+                <Button Background="Transparent" BorderThickness="0" Command="{Binding SalvarArquivoCommand}" Foreground="#555">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ContentSave" Height="25" Width="25"  />
+                        <TextBlock Text="Salvar" VerticalAlignment="Center" Margin="5 0" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="22 0" >
+                <TextBox Text="{Binding ArquivoNome, Mode=TwoWay, FallbackValue=main.c}" MaxLength="26" FontSize="25" Foreground="#783084" />
+            </StackPanel>
+            
         </Grid>
         
-        <Border Grid.Row="1" BorderThickness="1" BorderBrush="LightGray" FocusManager.FocusedElement="{Binding ElementName=CodeBox}">
+        <Border Grid.Row="2" BorderThickness="1" BorderBrush="LightGray" FocusManager.FocusedElement="{Binding ElementName=CodeBox}">
             <avalon:TextEditor Style="{StaticResource ResourceKey=CodeFont}" ShowLineNumbers="True" FontSize="14" BorderThickness="0" 
                                Name="CodeBox" VerticalScrollBarVisibility="Auto" LineNumbersForeground="#2b91af" SyntaxHighlighting="C++"
                                Document="{Binding CodeDocument}" />
         </Border>
-
-        <Button Grid.Row="2" Background="Teal" BorderBrush="Teal" Command="{Binding Path=AnalisarCommand}" Margin="60 10 60 5">
-            <StackPanel Orientation="Horizontal">
-                <Label Foreground="White" Content="{materialDesign:PackIcon Kind=PlayArrow}" />
-                <Label Foreground="White" Content="Analisar" />
-            </StackPanel>
-        </Button>
+        
+        <!--
         <Label Grid.Row="3" Content="Resultado:" FontSize="14" />
         <ScrollViewer Grid.Row="4">
             <TextBlock TextWrapping="Wrap" Text="{Binding LexicoResult}" 
                Margin="7" FontSize="14" />
-        </ScrollViewer>
+        </ScrollViewer> -->
     </Grid>
 </Window>

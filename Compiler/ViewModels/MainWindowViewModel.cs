@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -13,6 +14,24 @@ namespace Compiler
         #endregion
 
         private AnaLexico analexico;
+        private string arquivoNome;
+
+        public string ArquivoNome
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(arquivoNome))
+                    return "main.c";
+
+                return arquivoNome;
+            }
+            set
+            {
+                if (!value.EndsWith(".c"))
+                    value = value + ".c";
+                arquivoNome = value;
+            }
+        }
         public string LexicoResult { get; set; }
         public TextDocument CodeDocument { get; set; }
 
@@ -56,6 +75,8 @@ namespace Compiler
             using (SaveFileDialog dialog = new SaveFileDialog())
             {
                 dialog.Filter = "Código C|*.c|Todos os arquivos|*.*";
+                dialog.FileName = ArquivoNome;
+                dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 var result = dialog.ShowDialog();
                 if (result == DialogResult.OK)
                 {
@@ -74,6 +95,7 @@ namespace Compiler
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 dialog.Filter = "Codigo C (*.c)|*.c|Todos os arquivos (*.*)|*.*";
+                dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 var result = dialog.ShowDialog();
                 if (result == DialogResult.OK)
                 {
@@ -82,6 +104,7 @@ namespace Compiler
                         using (StreamReader reader = new StreamReader(fs))
                         {
                             CodeDocument.Text = reader.ReadToEnd();
+                            ArquivoNome = dialog.FileName;
                         }
                     }
                 }

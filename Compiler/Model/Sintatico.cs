@@ -31,22 +31,31 @@ namespace Compiler
 
             var no = AnalisarListaComandos();
 
+            while (tokenAtual.Tipo != TipoToken.FechaChaves)
+            {
+                var comando = AnalisarComando();
+
+                if (comando is VazioNo)
+                    break;
+
+                (no as ComandosNo).Comandos.Add(comando);
+            }
+
             TokenEsperado(TipoToken.FechaChaves);
 
+            if (tokenAtual != listaTokens[listaTokens.Count - 1])
+            {
+                throw new SintaticoException("Algo está errado.");
+            }
+            
             return no;
         }
 
         private ArvoreNo AnalisarListaComandos()
         {
             List<ArvoreNo> comandos = new List<ArvoreNo>();
-
             ArvoreNo no = AnalisarComando();
-
-            while (!(no is VazioNo))
-            {
-                comandos.Add(no);
-                no = AnalisarComando();
-            }
+            comandos.Add(no);
 
             return new ComandosNo(comandos);
         }
@@ -57,7 +66,7 @@ namespace Compiler
 
             if (tokenAtual.Tipo == TipoToken.Se)
             {
-                no = new VazioNo();
+                no = AnalisarCondicional();
             }
             else if (tokenAtual.Tipo == TipoToken.Senao)
             {
@@ -113,7 +122,6 @@ namespace Compiler
             return new AtribuicaoNo(identificador, atrib, expressao);
         }
 
-
         private ArvoreNo AnalisarLoop()
         {
             ProximoToken(TipoToken.Enquanto);
@@ -122,10 +130,45 @@ namespace Compiler
             ProximoToken(TipoToken.FechaParenteses);
 
             ProximoToken(TipoToken.AbreChaves);
-            var comandos = AnalisarListaComandos();
+            ArvoreNo comandos = AnalisarListaComandos();
+
+            while (tokenAtual.Tipo != TipoToken.FechaChaves)
+            {
+                ArvoreNo comando = AnalisarComando();
+
+                if (comando is VazioNo)
+                    break;
+
+                (comandos as ComandosNo).Comandos.Add(comando);
+            }
+
             ProximoToken(TipoToken.FechaChaves);
 
             return new LoopNo(no, comandos);
+        }
+
+        private ArvoreNo AnalisarCondicional()
+        {
+            ProximoToken(TipoToken.Se);
+            ProximoToken(TipoToken.AbreParenteses);
+            ArvoreNo no = AnalisarBooleana();
+            ProximoToken(TipoToken.FechaParenteses);
+
+            ProximoToken(TipoToken.AbreChaves);
+            ArvoreNo comandos = AnalisarListaComandos();
+
+            while (tokenAtual.Tipo != TipoToken.FechaChaves)
+            {
+                ArvoreNo comando = AnalisarComando();
+
+                if (comando is VazioNo)
+                    break;
+
+                (comandos as ComandosNo).Comandos.Add(comando);
+            }
+
+            ProximoToken(TipoToken.FechaChaves);
+            return new CondicionalNo(no, comandos);
         }
 
         private ArvoreNo AnalisarBooleana()
