@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Compiler
+﻿namespace Compiler
 {
     public class VazioNo : ArvoreNo
     {
-        public override object Aceitar(object opcoes)
+        public override object GetValor(IValor valor)
         {
-            return opcoes;
+            return null;
         }
     }
 }

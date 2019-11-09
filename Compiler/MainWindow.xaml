@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Compiler"
         xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="12"
@@ -21,6 +22,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
             <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid Background="#783084" Grid.Row="0">
@@ -64,13 +66,28 @@
             </StackPanel>
             
         </Grid>
-        
+
         <Border Grid.Row="2" BorderThickness="1" BorderBrush="LightGray" FocusManager.FocusedElement="{Binding ElementName=CodeBox}">
             <avalon:TextEditor Style="{StaticResource ResourceKey=CodeFont}" ShowLineNumbers="True" FontSize="14" BorderThickness="0" 
                                Name="CodeBox" VerticalScrollBarVisibility="Auto" LineNumbersForeground="#2b91af" SyntaxHighlighting="C++"
                                Document="{Binding CodeDocument}" />
         </Border>
-        
+
+        <xcad:DockingManager Grid.Row="3">
+            <xcad:LayoutRoot>
+                <xcad:LayoutPanel>
+                    <xcad:LayoutAnchorablePane>
+                        <xcad:LayoutAnchorable>
+                                <ScrollViewer Grid.Row="4">
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding LexicoResult}" 
+                   Margin="7" FontSize="14" />
+                                </ScrollViewer>
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+
         <!--
         <Label Grid.Row="3" Content="Resultado:" FontSize="14" />
         <ScrollViewer Grid.Row="4">

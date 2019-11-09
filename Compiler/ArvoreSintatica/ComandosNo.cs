@@ -13,8 +13,7 @@ namespace Compiler
         public ComandosNo(List<ArvoreNo> comandos)
         {
             Comandos = new List<ArvoreNo>();
-
-            // TODO: alterar
+            
             foreach (var item in comandos)
             {
                 if (item is VazioNo)
@@ -23,9 +22,9 @@ namespace Compiler
             }
         }
 
-        public override object Aceitar(object opcoes)
+        public override object GetValor(IValor valor)
         {
-            return opcoes;
+            return valor.GetComandos(Comandos);
         }
     }
 }

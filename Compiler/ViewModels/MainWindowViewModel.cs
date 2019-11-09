@@ -53,11 +53,16 @@ namespace Compiler
                 analexico = new AnaLexico(CodeDocument.Text);
                 var result = analexico.Analisar();
 
-                LexicoResult = string.Empty;
-                result.ForEach(x => LexicoResult += x.Tipo.ToString() + " ");
+                //LexicoResult = string.Empty;
+                //result.ForEach(x => LexicoResult += x.Tipo.ToString() + " ");
 
                 Sintatico sintatico = new Sintatico(result);
-                sintatico.Analisar();
+                ArvoreNo no = sintatico.Analisar();
+
+                Semantico semantico = new Semantico();
+                var x = no.GetValor(semantico);
+
+                LexicoResult = (x as string);
             }
             catch (LexicoException ex)
             {
@@ -65,7 +70,11 @@ namespace Compiler
             }
             catch (SintaticoException ex)
             {
-                LexicoResult = $"{ex.Message}";
+                LexicoResult = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                LexicoResult = ex.Message;
             }
         }
 

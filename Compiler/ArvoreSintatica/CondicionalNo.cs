@@ -4,16 +4,18 @@
     {
         public ArvoreNo Booleana { get; private set; }
         public ArvoreNo Corpo { get; private set; }
+        public ArvoreNo Senao { get; private set; } 
 
-        public CondicionalNo(ArvoreNo booleana, ArvoreNo corpo)
+        public CondicionalNo(ArvoreNo booleana, ArvoreNo corpo, ArvoreNo senao)
         {
             Booleana = booleana;
             Corpo = corpo;
+            Senao = senao;
         }
 
-        public override object Aceitar(object opcoes)
+        public override object GetValor(IValor valor)
         {
-            return opcoes;
+            return valor.GetCondicional(Booleana, Corpo, Senao);
         }
     }
 }

@@ -14,9 +14,9 @@ namespace Compiler
             mAtribuicao = atribuicao;
         }
 
-        public override object Aceitar(object opcoes)
+        public override object GetValor(IValor valor)
         {
-            return opcoes;
+            return valor.GetDeclaracao(mTipo, mIdentificador, mAtribuicao);
         }
     }
 }

@@ -3,19 +3,17 @@
     public class AtribuicaoNo : ArvoreNo
     {
         public Token Identificador { get; private set; }
-        public Token Atribuicao { get; private set; }
         public ArvoreNo Expressao { get; private set; }
 
-        public AtribuicaoNo(Token identificador, Token atribuicao, ArvoreNo expr)
+        public AtribuicaoNo(Token identificador, ArvoreNo expr)
         {
             Identificador = identificador;
-            Atribuicao = atribuicao;
             Expressao = expr;
         }
 
-        public override object Aceitar(object opcoes)
+        public override object GetValor(IValor valor)
         {
-            return opcoes;
+            return valor.GetAtribuicao(Identificador, Expressao);
         }
     }
 }

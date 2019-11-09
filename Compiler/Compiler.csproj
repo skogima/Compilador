@@ -65,6 +65,12 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.8.19076.18510, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xceed.Wpf.AvalonDock.3.8.19076.18510\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.8.19076.18510, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xceed.Wpf.Toolkit.3.8.19076.18510\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -78,13 +84,15 @@
     <Compile Include="ArvoreSintatica\CondicionalNo.cs" />
     <Compile Include="ArvoreSintatica\DeclaracaoNo.cs" />
     <Compile Include="ArvoreSintatica\ExpressaoNo.cs" />
+    <Compile Include="ArvoreSintatica\FatorNo.cs" />
     <Compile Include="ArvoreSintatica\LoopNo.cs" />
-    <Compile Include="ArvoreSintatica\NumeroNo.cs" />
     <Compile Include="ArvoreSintatica\SenaoNo.cs" />
     <Compile Include="ArvoreSintatica\VazioNo.cs" />
     <Compile Include="Enums\TipoToken.cs" />
     <Compile Include="Model\AnaLexico.cs" />
+    <Compile Include="Model\IValor.cs" />
     <Compile Include="Model\LexicoException.cs" />
+    <Compile Include="Model\Semantico.cs" />
     <Compile Include="Model\SintaticoException.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />

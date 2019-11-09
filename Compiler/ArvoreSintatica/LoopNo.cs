@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Compiler
+﻿namespace Compiler
 {
     public class LoopNo : ArvoreNo
     {
@@ -13,9 +11,9 @@ namespace Compiler
             Corpo = corpo;
         }
 
-        public override object Aceitar(object opcoes)
+        public override object GetValor(IValor valor)
         {
-            return opcoes;
+            return valor.GetLoop(Booleana, Corpo);
         }
     }
 }

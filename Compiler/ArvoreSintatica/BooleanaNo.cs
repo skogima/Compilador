@@ -14,9 +14,9 @@ namespace Compiler
             Direita = dir;
         }
 
-        public override object Aceitar(object opcoes)
+        public override object GetValor(IValor valor)
         {
-            return opcoes;
+            return valor.GetBooleana(Esquerda, Operador, Direita);
         }
     }
 }

@@ -14,9 +14,10 @@ namespace Compiler
             tokenAtual = listaTokens[tokens];
         }
 
-        public void Analisar()
+        public ArvoreNo Analisar()
         {
             var result = AnalisarFuncao();
+            return result;
         }
 
         private ArvoreNo AnalisarFuncao()
@@ -51,6 +52,7 @@ namespace Compiler
             return no;
         }
 
+        #region Comandos
         private ArvoreNo AnalisarListaComandos()
         {
             List<ArvoreNo> comandos = new List<ArvoreNo>();
@@ -67,10 +69,6 @@ namespace Compiler
             if (tokenAtual.Tipo == TipoToken.Se)
             {
                 no = AnalisarCondicional();
-            }
-            else if (tokenAtual.Tipo == TipoToken.Senao)
-            {
-                no = new VazioNo();
             }
             else if (tokenAtual.Tipo == TipoToken.Tipo)
             {
@@ -116,10 +114,10 @@ namespace Compiler
         private ArvoreNo AnalisarAtribuicao()
         {
             Token identificador = ProximoToken(TipoToken.Identificador);
-            Token atrib = ProximoToken(TipoToken.Atribuicao);
+            ProximoToken(TipoToken.Atribuicao);
             ArvoreNo expressao = AnalisarExpressao();
 
-            return new AtribuicaoNo(identificador, atrib, expressao);
+            return new AtribuicaoNo(identificador, expressao);
         }
 
         private ArvoreNo AnalisarLoop()
@@ -168,28 +166,39 @@ namespace Compiler
             }
 
             ProximoToken(TipoToken.FechaChaves);
-            return new CondicionalNo(no, comandos);
+            ArvoreNo senao = new VazioNo();
+
+            if (tokenAtual.Tipo == TipoToken.Senao)
+            {
+                senao = AnalisarSenao();
+            }
+
+            return new CondicionalNo(no, comandos, senao);
         }
 
-        private ArvoreNo AnalisarBooleana()
+        private ArvoreNo AnalisarSenao()
         {
-            var esq = AnalisarExpressao();
-            Token op = tokenAtual;
+            ProximoToken(TipoToken.Senao);
+            ProximoToken(TipoToken.AbreChaves);
+            ArvoreNo senaoCorpo = AnalisarListaComandos();
 
-            if (tokenAtual.Tipo == TipoToken.Igual || tokenAtual.Tipo == TipoToken.Diferente
-                || tokenAtual.Tipo == TipoToken.Maior || tokenAtual.Tipo == TipoToken.Menor
-                || tokenAtual.Tipo == TipoToken.MaiorIgual || tokenAtual.Tipo == TipoToken.MenorIgual)
+            while (tokenAtual.Tipo != TipoToken.FechaChaves)
             {
-                ProximoToken(op.Tipo);
-            }
-            else
-            {
-                throw new SintaticoException($"Operador lógico esperado.");
+                ArvoreNo comando = AnalisarComando();
+
+                if (comando is VazioNo)
+                    break;
+
+                (senaoCorpo as ComandosNo).Comandos.Add(comando);
             }
 
-            var dir = AnalisarExpressao();
-            return new BooleanaNo(op, esq, dir);
+            ProximoToken(TipoToken.FechaChaves);
+
+            return senaoCorpo;
         }
+
+        #endregion
+        #region Expressões
 
         private ArvoreNo AnalisarExpressao()
         {
@@ -251,6 +260,28 @@ namespace Compiler
                 return new FatorNo(id);
             }
         }
+
+        private ArvoreNo AnalisarBooleana()
+        {
+            var esq = AnalisarExpressao();
+            Token op = tokenAtual;
+
+            if (tokenAtual.Tipo == TipoToken.Igual || tokenAtual.Tipo == TipoToken.Diferente
+                || tokenAtual.Tipo == TipoToken.Maior || tokenAtual.Tipo == TipoToken.Menor
+                || tokenAtual.Tipo == TipoToken.MaiorIgual || tokenAtual.Tipo == TipoToken.MenorIgual)
+            {
+                ProximoToken(op.Tipo);
+            }
+            else
+            {
+                throw new SintaticoException($"Operador lógico esperado.");
+            }
+
+            var dir = AnalisarExpressao();
+            return new BooleanaNo(op, esq, dir);
+        }
+
+        #endregion
 
         private Token ProximoToken(TipoToken tipoToken)
         {
