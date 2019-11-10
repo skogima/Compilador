@@ -9,7 +9,6 @@ namespace Compiler
         object GetExpressao(ArvoreNo esquerda, Token operacao, ArvoreNo direita);
         object GetLoop(ArvoreNo booleana, ArvoreNo corpo);
         object GetFator(Token fator);
-        object GetSenao(ArvoreNo booleana, ArvoreNo corpo);
         object GetCondicional(ArvoreNo booleana, ArvoreNo corpo, ArvoreNo senao);
         object GetComandos(List<ArvoreNo> comandos);
         object GetBooleana(ArvoreNo esquerda, Token operador, ArvoreNo direita);

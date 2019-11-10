@@ -37,7 +37,7 @@ namespace Compiler
                 arquivoNome = value;
             }
         }
-        public string LexicoResult { get; set; }
+        public string CompilerResult { get; set; }
         public ObservableCollection<Variaveis> VariaveisCollection { get; set; }
         public TextDocument CodeDocument { get; set; }
         public WindowViewModel WindowProperties { get; set; }
@@ -70,22 +70,25 @@ namespace Compiler
 
                 var list = x as List<Variaveis>;
                 VariaveisCollection.Clear();
+
                 foreach (var item in list)
                 {
                     VariaveisCollection.Add(item);
                 }
+
+                CompilerResult = "Compilação bem-sucedida.";
             }
             catch (LexicoException ex)
             {
-                LexicoResult = $"{ex.Message} ({ex.Caracter}) na linha {ex.Linha}";
+                CompilerResult = $"{ex.Message} ({ex.Caracter}) na linha {ex.Linha}";
             }
             catch (SintaticoException ex)
             {
-                LexicoResult = ex.Message;
+                CompilerResult = ex.Message;
             }
-            catch (Exception ex)
+            catch (SemanticoException ex)
             {
-                LexicoResult = ex.Message;
+                CompilerResult = ex.Message;
             }
         }
 

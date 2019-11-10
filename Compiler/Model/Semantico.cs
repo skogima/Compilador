@@ -49,42 +49,82 @@ namespace Compiler
                 if (result.GetType() == typeof(int))
                 {
                     if (VariaveisTipo[identificador.Valor] != "int")
-                        throw new Exception("Tipo errado foi atribuído a variável");
+                        throw new SemanticoException("Tipo errado foi atribuído a variável");
                     return Convert.ToInt32(result);
                 }
                 else if (result.GetType() == typeof(float))
                 {
                     if (VariaveisTipo[identificador.Valor] != "float")
-                        throw new Exception("Tipo errado foi atribuído a variável");
+                        throw new SemanticoException("Tipo errado foi atribuído a variável");
                     return float.Parse(result.ToString(), CultureInfo.InvariantCulture.NumberFormat);
                 }
                 else
                 {
                     if (VariaveisTipo[identificador.Valor] != "char")
-                        throw new Exception("Tipo errado foi atribuído a variável");
+                        throw new SemanticoException("Tipo errado foi atribuído a variável");
                     return Convert.ToChar(result);
                 }
             }
             else
-                throw new Exception($"Variável {identificador.Valor} não existe.");
+                throw new SemanticoException($"Variável {identificador.Valor} não existe.");
         }
 
         public object GetBooleana(ArvoreNo esquerda, Token operador, ArvoreNo direita)
         {
+            var esq = esquerda.GetValor(this);
+            var dir = direita.GetValor(this);
+            IComparer<object> comparer = Comparer<object>.Default;
+
             switch (operador.Tipo)
             {
                 case TipoToken.Igual:
-                    return (esquerda.GetValor(this) == direita.GetValor(this));
+                    return comparer.Compare(esq, dir) == 0 ? true : false;
                 case TipoToken.Maior:
-                    return true;
+                    return comparer.Compare(esq, dir) > 0 ? true : false;
+                case TipoToken.Menor:
+                    return comparer.Compare(esq, dir) < 0 ? true : false;
+                case TipoToken.MaiorIgual:
+                    return comparer.Compare(esq, dir) >= 0 ? true : false;
+                case TipoToken.MenorIgual:
+                    return comparer.Compare(esq, dir) <= 0 ? true : false;
+                case TipoToken.Diferente:
+                    return comparer.Compare(esq, dir) != 0 ? true : false;
                 default:
-                    return false;
+                    throw new SemanticoException("Erro ao analisar expressão booleana");
             }
         }
 
         public object GetCondicional(ArvoreNo booleana, ArvoreNo corpo, ArvoreNo senao)
         {
-            throw new System.NotImplementedException();
+            bool condicao = (bool)booleana.GetValor(this);
+            
+            if (condicao)
+            {
+                return corpo.GetValor(this);
+            }
+            else
+            {
+                if (!(senao is VazioNo))
+                {
+                    return senao.GetValor(this);
+                }
+            }
+
+            return null;
+        }
+
+        public object GetLoop(ArvoreNo booleana, ArvoreNo corpo)
+        {
+            bool condicao = (bool)booleana.GetValor(this);
+            object resultado = new object();
+
+            while (condicao)
+            {
+                resultado = corpo.GetValor(this);
+                condicao = (bool)booleana.GetValor(this);
+            }
+
+            return resultado;
         }
 
         public object GetDeclaracao(Token tipo, Token identificador, ArvoreNo atribuicao)
@@ -133,11 +173,11 @@ namespace Compiler
                         else
                             return Convert.ToSingle(esq) / Convert.ToSingle(dir);
                     default:
-                        throw new System.Exception("Fudeu");
+                        throw new SemanticoException($"Não foi possível realizar operações entre {esq} e {dir}");
                 }
             }
             else
-                throw new Exception($"Não é possível realizar operação entre {esq.GetType()} e {dir.GetType().Name}");
+                throw new SemanticoException($"Não é possível realizar operação entre {esq.GetType()} e {dir.GetType().Name}");
         }
 
         public object GetFator(Token fator)
@@ -154,7 +194,7 @@ namespace Compiler
                         return Convert.ToChar(Variaveis[fator.Valor]);
                 }
                 else
-                    throw new Exception($"Variável {fator.Valor} não existe.");
+                    throw new SemanticoException($"Variável {fator.Valor} não existe.");
             }
             else if (fator.Tipo == TipoToken.Literal)
                 return Convert.ToChar(fator.Valor);
@@ -165,16 +205,6 @@ namespace Compiler
             }
             else
                 return Convert.ToInt32(fator.Valor);
-        }
-
-        public object GetLoop(ArvoreNo booleana, ArvoreNo corpo)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public object GetSenao(ArvoreNo booleana, ArvoreNo corpo)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
