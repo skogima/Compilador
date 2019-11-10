@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -17,10 +16,14 @@ namespace Compiler
         public RelayCommand ProcurarArquivoCommand { get; set; }
         #endregion
 
+        #region Privates
         private AnaLexico analexico;
         private string arquivoNome;
+        private string filePath = string.Empty;
         private bool isSaved = false;
+        #endregion
 
+        #region Propriedades
         public string ArquivoNome
         {
             get
@@ -41,6 +44,7 @@ namespace Compiler
         public ObservableCollection<Variaveis> VariaveisCollection { get; set; }
         public TextDocument CodeDocument { get; set; }
         public WindowViewModel WindowProperties { get; set; }
+        #endregion
 
         public MainWindowViewModel(Window window)
         {
@@ -51,6 +55,8 @@ namespace Compiler
             WindowProperties = new WindowViewModel(window);
             VariaveisCollection = new ObservableCollection<Variaveis>();
         }
+
+        #region Command Actions
 
         private void Analisar()
         {
@@ -92,11 +98,9 @@ namespace Compiler
             }
         }
 
-        #region Command Actions
         private void Salvar()
         {
-            string filePath = string.Empty;
-            if (isSaved)
+            if (string.IsNullOrEmpty(filePath))
                 using (SaveFileDialog dialog = new SaveFileDialog())
                 {
                     dialog.Filter = "Código C|*.c|Todos os arquivos|*.*";
@@ -110,15 +114,10 @@ namespace Compiler
                     }
                 }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (!string.IsNullOrEmpty(filePath))
                 using (FileStream fs = new FileStream(filePath, FileMode.Create))
-                {
-
                     using (StreamWriter writer = new StreamWriter(fs))
-                    {
                         CodeDocument.WriteTextTo(writer);
-                    }
-                }
         }
         private void Abrir()
         {
@@ -134,8 +133,8 @@ namespace Compiler
                         using (StreamReader reader = new StreamReader(fs))
                         {
                             CodeDocument.Text = reader.ReadToEnd();
-                            ArquivoNome = dialog.FileName;
-                            isSaved = true;
+                            filePath = dialog.FileName;
+                            ArquivoNome = Path.GetFileName(dialog.FileName);
                         }
                     }
                 }
