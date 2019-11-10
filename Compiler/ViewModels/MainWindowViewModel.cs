@@ -20,7 +20,6 @@ namespace Compiler
         private AnaLexico analexico;
         private string arquivoNome;
         private string filePath = string.Empty;
-        private bool isSaved = false;
         #endregion
 
         #region Propriedades
