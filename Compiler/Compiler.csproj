@@ -77,17 +77,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ArvoreSintatica\ArvoreNo.cs" />
-    <Compile Include="ArvoreSintatica\AtribuicaoNo.cs" />
-    <Compile Include="ArvoreSintatica\BooleanaNo.cs" />
-    <Compile Include="ArvoreSintatica\ComandosNo.cs" />
-    <Compile Include="ArvoreSintatica\CondicionalNo.cs" />
-    <Compile Include="ArvoreSintatica\DeclaracaoNo.cs" />
-    <Compile Include="ArvoreSintatica\ExpressaoNo.cs" />
-    <Compile Include="ArvoreSintatica\FatorNo.cs" />
-    <Compile Include="ArvoreSintatica\LoopNo.cs" />
-    <Compile Include="ArvoreSintatica\SenaoNo.cs" />
-    <Compile Include="ArvoreSintatica\VazioNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\ArvoreNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\AtribuicaoNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\BooleanaNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\ComandosNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\CondicionalNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\DeclaracaoNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\ExpressaoNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\FatorNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\LoopNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\SenaoNo.cs" />
+    <Compile Include="Model\ArvoreSintatica\VazioNo.cs" />
     <Compile Include="Enums\TipoToken.cs" />
     <Compile Include="Model\AnaLexico.cs" />
     <Compile Include="Model\IValor.cs" />
@@ -97,6 +97,8 @@
     <Compile Include="Model\Token.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="Model\Sintatico.cs" />
+    <Compile Include="ViewModels\Helpers\Variaveis.cs" />
+    <Compile Include="ViewModels\WindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -204,7 +204,7 @@ namespace Compiler
         {
             ArvoreNo esq = AnalisarTermo();
 
-            if (tokenAtual.Tipo == TipoToken.Mais || tokenAtual.Tipo == TipoToken.Menos)
+            while (tokenAtual.Tipo == TipoToken.Mais || tokenAtual.Tipo == TipoToken.Menos)
             {
                 Token operacao = tokenAtual;
                 ProximoToken(operacao.Tipo);

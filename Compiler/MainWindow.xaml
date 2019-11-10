@@ -16,13 +16,14 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="CompilaDor" MinWidth="860" MinHeight="480" Height="680" Width="860">
+        Title="CompilaDor" MinWidth="860" MinHeight="480" Height="680" Width="{Binding WindowProperties.WindowWidth, FallbackValue=860}">
     <Grid Background="#F8F9FA">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
-            <RowDefinition Height="4*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="4*" MinHeight="250" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid Background="#783084" Grid.Row="0">
@@ -37,7 +38,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center"  Margin="20 0">
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right"  VerticalAlignment="Center"
+                        Orientation="Horizontal"  Margin="20 0">
                 <Button Background="{Binding ElementName=UpperBarGrid, Path=Background}" Command="{Binding AnalisarCommand}"
                          BorderThickness="0" Foreground="#555">
                     <StackPanel Orientation="Horizontal">
@@ -46,14 +48,16 @@
                     </StackPanel>
                 </Button>
 
-                <Button Background="Transparent" BorderThickness="0" Command="{Binding ProcurarArquivoCommand}" Foreground="#555">
+                <Button Command="{Binding ProcurarArquivoCommand}" 
+                        Foreground="#555" Background="Transparent" BorderThickness="0">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="FileFind" Height="25" Width="25"  />
-                        <TextBlock Text="Procurar..." VerticalAlignment="Center" Margin="5 0" />
+                        <TextBlock Text="Procurar..." VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
 
-                <Button Background="Transparent" BorderThickness="0" Command="{Binding SalvarArquivoCommand}" Foreground="#555">
+                <Button Command="{Binding SalvarArquivoCommand}" 
+                        Background="Transparent" Foreground="#555" BorderThickness="0" >
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="ContentSave" Height="25" Width="25"  />
                         <TextBlock Text="Salvar" VerticalAlignment="Center" Margin="5 0" />
@@ -62,37 +66,41 @@
             </StackPanel>
 
             <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="22 0" >
-                <TextBox Text="{Binding ArquivoNome, Mode=TwoWay, FallbackValue=main.c}" MaxLength="26" FontSize="25" Foreground="#783084" />
+                <TextBox Text="{Binding ArquivoNome, Mode=TwoWay, FallbackValue=main.c}" 
+                         MaxLength="26" FontSize="25" Foreground="#783084" />
             </StackPanel>
             
         </Grid>
 
-        <Border Grid.Row="2" BorderThickness="1" BorderBrush="LightGray" FocusManager.FocusedElement="{Binding ElementName=CodeBox}">
-            <avalon:TextEditor Style="{StaticResource ResourceKey=CodeFont}" ShowLineNumbers="True" FontSize="14" BorderThickness="0" 
-                               Name="CodeBox" VerticalScrollBarVisibility="Auto" LineNumbersForeground="#2b91af" SyntaxHighlighting="C++"
-                               Document="{Binding CodeDocument}" />
+        <Border Grid.Row="2" FocusManager.FocusedElement="{Binding ElementName=CodeBox}"
+                BorderThickness="1" BorderBrush="LightGray" >
+            <avalon:TextEditor Style="{StaticResource ResourceKey=CodeFont}" Document="{Binding CodeDocument}"
+                               SyntaxHighlighting="C++" Name="CodeBox" 
+                               ShowLineNumbers="True" VerticalScrollBarVisibility="Auto" 
+                               FontSize="14" BorderThickness="0" LineNumbersForeground="#2B91AF" 
+                                />
         </Border>
 
-        <xcad:DockingManager Grid.Row="3">
+        <GridSplitter Grid.Row="3" Height="4" HorizontalAlignment="Stretch" />
+
+        <xcad:DockingManager Grid.Row="4">
             <xcad:LayoutRoot>
-                <xcad:LayoutPanel>
+                <xcad:LayoutPanel Orientation="Vertical">
                     <xcad:LayoutAnchorablePane>
-                        <xcad:LayoutAnchorable>
-                                <ScrollViewer Grid.Row="4">
-                                    <TextBlock TextWrapping="Wrap" Text="{Binding LexicoResult}" 
-                   Margin="7" FontSize="14" />
-                                </ScrollViewer>
+                        <xcad:LayoutAnchorable CanClose="False" CanHide="False"  Title="Variáveis">
+                            <ListView ItemsSource="{Binding VariaveisCollection}">
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridViewColumn Header="Nome" DisplayMemberBinding="{Binding Valores}" Width="{Binding WindowProperties.ColumnWidth}"  />
+                                        <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Path=Tipos}" Width="{Binding WindowProperties.ColumnWidth}" />
+                                        <GridViewColumn Header="Valor" DisplayMemberBinding="{Binding Path=Valores}" Width="{Binding WindowProperties.ColumnWidth}"  />
+                                </GridView>
+                            </ListView.View>
+                            </ListView>
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>
         </xcad:DockingManager>
-
-        <!--
-        <Label Grid.Row="3" Content="Resultado:" FontSize="14" />
-        <ScrollViewer Grid.Row="4">
-            <TextBlock TextWrapping="Wrap" Text="{Binding LexicoResult}" 
-               Margin="7" FontSize="14" />
-        </ScrollViewer> -->
     </Grid>
 </Window>

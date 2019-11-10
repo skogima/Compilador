@@ -1,6 +1,10 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace Compiler
@@ -15,6 +19,7 @@ namespace Compiler
 
         private AnaLexico analexico;
         private string arquivoNome;
+        private bool isSaved = false;
 
         public string ArquivoNome
         {
@@ -33,14 +38,18 @@ namespace Compiler
             }
         }
         public string LexicoResult { get; set; }
+        public ObservableCollection<Variaveis> VariaveisCollection { get; set; }
         public TextDocument CodeDocument { get; set; }
+        public WindowViewModel WindowProperties { get; set; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(Window window)
         {
             CodeDocument = new TextDocument();
             AnalisarCommand = new RelayCommand(Analisar);
             SalvarArquivoCommand = new RelayCommand(Salvar);
             ProcurarArquivoCommand = new RelayCommand(Abrir);
+            WindowProperties = new WindowViewModel(window);
+            VariaveisCollection = new ObservableCollection<Variaveis>();
         }
 
         private void Analisar()
@@ -53,16 +62,18 @@ namespace Compiler
                 analexico = new AnaLexico(CodeDocument.Text);
                 var result = analexico.Analisar();
 
-                //LexicoResult = string.Empty;
-                //result.ForEach(x => LexicoResult += x.Tipo.ToString() + " ");
-
                 Sintatico sintatico = new Sintatico(result);
                 ArvoreNo no = sintatico.Analisar();
 
                 Semantico semantico = new Semantico();
                 var x = no.GetValor(semantico);
 
-                LexicoResult = (x as string);
+                var list = x as List<Variaveis>;
+                VariaveisCollection.Clear();
+                foreach (var item in list)
+                {
+                    VariaveisCollection.Add(item);
+                }
             }
             catch (LexicoException ex)
             {
@@ -81,23 +92,30 @@ namespace Compiler
         #region Command Actions
         private void Salvar()
         {
-            using (SaveFileDialog dialog = new SaveFileDialog())
-            {
-                dialog.Filter = "Código C|*.c|Todos os arquivos|*.*";
-                dialog.FileName = ArquivoNome;
-                dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                var result = dialog.ShowDialog();
-                if (result == DialogResult.OK)
+            string filePath = string.Empty;
+            if (isSaved)
+                using (SaveFileDialog dialog = new SaveFileDialog())
                 {
-                    using (FileStream fs = new FileStream(dialog.FileName, FileMode.Create))
+                    dialog.Filter = "Código C|*.c|Todos os arquivos|*.*";
+                    dialog.FileName = ArquivoNome;
+                    dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    var result = dialog.ShowDialog();
+                    if (result == DialogResult.OK)
                     {
-                        using (StreamWriter writer = new StreamWriter(fs))
-                        {
-                            CodeDocument.WriteTextTo(writer);
-                        }
+                        isSaved = true;
+                        filePath = dialog.FileName;
                     }
                 }
-            }
+
+            if (string.IsNullOrEmpty(filePath))
+                using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                {
+
+                    using (StreamWriter writer = new StreamWriter(fs))
+                    {
+                        CodeDocument.WriteTextTo(writer);
+                    }
+                }
         }
         private void Abrir()
         {
@@ -114,6 +132,7 @@ namespace Compiler
                         {
                             CodeDocument.Text = reader.ReadToEnd();
                             ArquivoNome = dialog.FileName;
+                            isSaved = true;
                         }
                     }
                 }
