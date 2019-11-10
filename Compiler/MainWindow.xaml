@@ -31,7 +31,6 @@
                        FontWeight="Thin" VerticalAlignment="Center" Margin="20 0"  />
         </Grid>
 
-
         <Grid Grid.Row="1" x:Name="UpperBarGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -91,12 +90,42 @@
                             <ListView ItemsSource="{Binding VariaveisCollection}">
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
-                                        <GridViewColumn Header="Nome" DisplayMemberBinding="{Binding Valores}" Width="{Binding WindowProperties.ColumnWidth}"  />
-                                        <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Path=Tipos}" Width="{Binding WindowProperties.ColumnWidth}" />
-                                        <GridViewColumn Header="Valor" DisplayMemberBinding="{Binding Path=Valores}" Width="{Binding WindowProperties.ColumnWidth}"  />
-                                </GridView>
+                                        <GridViewColumn Width="{Binding WindowProperties.ColumnWidth}">
+                                            <GridViewColumn.Header>
+                                                <TextBlock Text="Nome" FontWeight="SemiBold" Foreground="#783084" />
+                                            </GridViewColumn.Header>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Identificadores}" Foreground="#783084" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="{Binding WindowProperties.ColumnWidth}">
+                                            <GridViewColumn.Header>
+                                                <TextBlock Text="Tipo" FontWeight="SemiBold" Foreground="#783084" />
+                                            </GridViewColumn.Header>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Tipos}" Foreground="#783084" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="{Binding WindowProperties.ColumnWidth}">
+                                            <GridViewColumn.Header>
+                                                <TextBlock Margin="5 0" Text="Valor" FontWeight="SemiBold" Foreground="#783084" />
+                                            </GridViewColumn.Header>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Valores}" Foreground="#783084" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
                             </ListView.View>
                             </ListView>
+                        </xcad:LayoutAnchorable>
+                        <xcad:LayoutAnchorable CanClose="False" CanHide="False"  Title="Erros">
+                            <TextBlock Text="{Binding CompilerResult}" FontSize="16" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                 </xcad:LayoutPanel>

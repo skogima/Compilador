@@ -86,14 +86,14 @@
     <Compile Include="Model\ArvoreSintatica\ExpressaoNo.cs" />
     <Compile Include="Model\ArvoreSintatica\FatorNo.cs" />
     <Compile Include="Model\ArvoreSintatica\LoopNo.cs" />
-    <Compile Include="Model\ArvoreSintatica\SenaoNo.cs" />
     <Compile Include="Model\ArvoreSintatica\VazioNo.cs" />
     <Compile Include="Enums\TipoToken.cs" />
     <Compile Include="Model\AnaLexico.cs" />
     <Compile Include="Model\IValor.cs" />
-    <Compile Include="Model\LexicoException.cs" />
+    <Compile Include="Model\Exceptions\LexicoException.cs" />
     <Compile Include="Model\Semantico.cs" />
-    <Compile Include="Model\SintaticoException.cs" />
+    <Compile Include="Model\Exceptions\SemanticoException.cs" />
+    <Compile Include="Model\Exceptions\SintaticoException.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="Model\Sintatico.cs" />
