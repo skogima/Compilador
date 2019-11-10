@@ -97,20 +97,22 @@ namespace Compiler
         public object GetCondicional(ArvoreNo booleana, ArvoreNo corpo, ArvoreNo senao)
         {
             bool condicao = (bool)booleana.GetValor(this);
-            
+            object retorno = null;
             if (condicao)
             {
-                return corpo.GetValor(this);
+                retorno = corpo.GetValor(this);
             }
             else
             {
                 if (!(senao is VazioNo))
                 {
-                    return senao.GetValor(this);
+                    retorno = senao.GetValor(this);
                 }
             }
 
-            return null;
+            RemoverDeclaracaoLocal(corpo as ComandosNo);
+
+            return retorno;
         }
 
         public object GetLoop(ArvoreNo booleana, ArvoreNo corpo)
@@ -122,9 +124,27 @@ namespace Compiler
             {
                 resultado = corpo.GetValor(this);
                 condicao = (bool)booleana.GetValor(this);
+                RemoverDeclaracaoLocal(corpo as ComandosNo);
             }
 
             return resultado;
+        }
+
+        private void RemoverDeclaracaoLocal(ComandosNo no)
+        {
+            foreach (var item in no.Comandos)
+            {
+                if (item is DeclaracaoNo)
+                {
+                    string id = (item as DeclaracaoNo).Identificador.Valor;
+                    if (Variaveis.ContainsKey(id))
+                    {
+                        Variaveis.Remove(id);
+                        VariaveisTipo.Remove(id);
+                    }
+
+                }
+            }
         }
 
         public object GetDeclaracao(Token tipo, Token identificador, ArvoreNo atribuicao)
@@ -146,7 +166,7 @@ namespace Compiler
             var dir = direita.GetValor(this);
 
             var tipoEsq = esq.GetType();
-            var tipoDir = esq.GetType();
+            var tipoDir = dir.GetType();
 
             if (tipoDir.Equals(tipoEsq))
             {
