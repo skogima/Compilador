@@ -125,7 +125,7 @@
                             </ListView>
                         </xcad:LayoutAnchorable>
                         <xcad:LayoutAnchorable CanClose="False" CanHide="False"  Title="Erros">
-                            <TextBlock Text="{Binding CompilerResult}" FontSize="16" />
+                            <TextBlock Text="{Binding CompilerResult}" FontSize="16" Padding="8" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                 </xcad:LayoutPanel>

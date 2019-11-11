@@ -64,6 +64,9 @@ namespace Compiler
 
             try
             {
+                VariaveisCollection.Clear();
+                CompilerResult = string.Empty;
+                
                 analexico = new AnaLexico(CodeDocument.Text);
                 var result = analexico.Analisar();
 
@@ -74,8 +77,7 @@ namespace Compiler
                 var x = no.GetValor(semantico);
 
                 var list = x as List<Variaveis>;
-                VariaveisCollection.Clear();
-
+                
                 foreach (var item in list)
                 {
                     VariaveisCollection.Add(item);
@@ -108,7 +110,6 @@ namespace Compiler
                     var result = dialog.ShowDialog();
                     if (result == DialogResult.OK)
                     {
-                        isSaved = true;
                         filePath = dialog.FileName;
                     }
                 }

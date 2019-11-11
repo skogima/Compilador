@@ -110,7 +110,7 @@ namespace Compiler
                         else
                         {
                             RecuarCaractere();
-                            throw new LexicoException($"Caractere inesperado '{caractereAtual}' na linha {linha}");
+                            throw new LexicoException($"Caractere inesperado", linha, caractereAtual);
                         }
                         break;
                     case '\'':
@@ -123,7 +123,7 @@ namespace Compiler
                                 listaTokens.Add(new Token { Tipo = TipoToken.Literal, Valor = c.ToString()});
                             else
                             {
-                                throw new LexicoException($"Caractere inesperado '{caractereAtual}' na linha {linha}");
+                                throw new LexicoException($"Caractere inesperado", linha, caractereAtual);
                             }
                         }
                         break;
@@ -195,7 +195,7 @@ namespace Compiler
                                 }
                                 else
                                 {
-                                    throw new LexicoException($"Caractere inesperado '{caractereAtual}' na linha {linha}");
+                                    throw new LexicoException($"Caractere inesperado", linha, caractereAtual); 
                                 }
                             }
                             else
@@ -206,7 +206,7 @@ namespace Compiler
                         }
                         #endregion
                         else
-                            throw new LexicoException($"Caractere inesperado '{caractereAtual}' na linha {linha}");
+                            throw new LexicoException($"Caractere inesperado", linha, caractereAtual);
                         break;
                 }
                 MoverCaracter();
