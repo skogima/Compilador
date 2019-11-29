@@ -97,6 +97,10 @@ namespace Compiler
             {
                 CompilerResult = ex.Message;
             }
+            catch (Exception ex)
+            {
+                CompilerResult = $"Erro: {ex.Message}";
+            }
         }
 
         private void Salvar()
